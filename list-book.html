@@ -19,33 +19,56 @@
   <main>
     <section>
       <h2>📚 Share a Book with Your Local Community</h2>
-      <form>
-        <label>Book Title:</label><br>
-        <input type="text" placeholder="e.g., Atomic Habits"><br><br>
+      <form id="bookForm">
+        <label for="title">Book Title:</label><br>
+        <input type="text" id="title" placeholder="e.g., Atomic Habits" required><br><br>
 
-        <label>Author:</label><br>
-        <input type="text" placeholder="e.g., James Clear"><br><br>
+        <label for="author">Author:</label><br>
+        <input type="text" id="author" placeholder="e.g., James Clear" required><br><br>
 
-        <label>Genre:</label><br>
-        <input type="text" placeholder="e.g., Self-help"><br><br>
+        <label for="genre">Genre:</label><br>
+        <input type="text" id="genre" placeholder="e.g., Self-help" required><br><br>
 
-        <label>Condition:</label><br>
-        <select>
+        <label for="condition">Condition:</label><br>
+        <select id="condition" required>
+          <option value="">Select condition</option>
           <option>Like New</option>
           <option>Good</option>
           <option>Fair</option>
           <option>Old but Usable</option>
         </select><br><br>
 
-        <label>Price (or write 0 for exchange):</label><br>
-        <input type="number" placeholder="e.g., 100"><br><br>
+        <label for="price">Price (or write 0 for exchange):</label><br>
+        <input type="number" id="price" placeholder="e.g., 100" required><br><br>
 
-        <label>Your PIN Code:</label><br>
-        <input type="text" placeholder="e.g., 160036"><br><br>
+        <label for="pincode">Your PIN Code:</label><br>
+        <input type="text" id="pincode" placeholder="e.g., 160036" required><br><br>
 
         <button type="submit">📤 Submit Book</button>
       </form>
     </section>
   </main>
+
+  <script>
+    document.getElementById("bookForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const book = {
+        title: document.getElementById("title").value,
+        author: document.getElementById("author").value,
+        genre: document.getElementById("genre").value,
+        condition: document.getElementById("condition").value,
+        price: document.getElementById("price").value,
+        pincode: document.getElementById("pincode").value
+      };
+
+      let books = JSON.parse(localStorage.getItem("books")) || [];
+      books.push(book);
+      localStorage.setItem("books", JSON.stringify(books));
+
+      alert("✅ Book listed successfully!");
+      this.reset();
+    });
+  </script>
 </body>
 </html>

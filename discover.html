@@ -18,30 +18,45 @@
 
   <main>
     <section>
-      <h2>📚 Available Nearby</h2>
+      <h2>📚 Find Books in Your Area</h2>
 
-      <div class="book-card">
-        <h3>Rich Dad Poor Dad</h3>
-        <p><strong>Author:</strong> Robert Kiyosaki</p>
-        <p><strong>Genre:</strong> Finance</p>
-        <p><strong>PIN:</strong> 160036</p>
-      </div>
+      <label for="searchPin">Enter Your PIN Code:</label>
+      <input type="text" id="searchPin" placeholder="e.g., 160036">
+      <button onclick="filterBooks()">Search</button>
 
-      <div class="book-card">
-        <h3>Atomic Habits</h3>
-        <p><strong>Author:</strong> James Clear</p>
-        <p><strong>Genre:</strong> Self-help</p>
-        <p><strong>PIN:</strong> 160037</p>
-      </div>
-
-      <div class="book-card">
-        <h3>Wings of Fire</h3>
-        <p><strong>Author:</strong> Dr. A.P.J. Abdul Kalam</p>
-        <p><strong>Genre:</strong> Biography</p>
-        <p><strong>PIN:</strong> 160038</p>
-      </div>
-
+      <div id="results" style="margin-top: 20px;"></div>
     </section>
   </main>
+
+  <script>
+    function filterBooks() {
+      const pin = document.getElementById("searchPin").value.trim();
+      const books = JSON.parse(localStorage.getItem("books")) || [];
+
+      const filtered = books.filter(book => book.pincode === pin);
+      const resultsDiv = document.getElementById("results");
+      resultsDiv.innerHTML = "";
+
+      if (filtered.length === 0) {
+        resultsDiv.innerHTML = "<p>❌ No books found for this PIN.</p>";
+        return;
+      }
+
+      filtered.forEach(book => {
+        const card = document.createElement("div");
+        card.classList.add("book-card");
+        card.innerHTML = `
+          <h3>${book.title}</h3>
+          <p><strong>Author:</strong> ${book.author}</p>
+          <p><strong>Genre:</strong> ${book.genre}</p>
+          <p><strong>Condition:</strong> ${book.condition}</p>
+          <p><strong>Price:</strong> ₹${book.price}</p>
+          <p><strong>PIN Code:</strong> ${book.pincode}</p>
+        `;
+        resultsDiv.appendChild(card);
+      });
+    }
+  </script>
 </body>
 </html>
+
